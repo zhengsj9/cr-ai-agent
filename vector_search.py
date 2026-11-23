@@ -51,7 +51,7 @@ for i in range(len(results["ids"][0])):
     similarity = 1 - distance
 
     print("\n商品编号：", product_id)
-    print("商品名称：", metadata.get("product_name", "未知"))
+    print("商品名称：", metadata.get("name", "未知"))
     print("商品文本：", document)
     print("余弦距离：", round(distance, 4))
     print("余弦相似度：", round(similarity, 4))
