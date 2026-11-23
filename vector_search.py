@@ -22,7 +22,49 @@ collection = client.get_collection(
 print("数据库商品数量：", collection.count())
 
 # 4. 接收用户搜索需求
-query = input("\n请输入商品搜索需求：").strip()
+# 1. 接收商品分类
+print("\n请选择商品分类：")
+print("1. Pet Supplies")
+print("2. Electronics")
+print("3. Sports & Outdoors")
+print("4. Home & Kitchen")
+print("5. Office Supplies")
+print("6. Travel")
+
+category_options = {
+    "1": "Pet Supplies",
+    "2": "Electronics",
+    "3": "Sports & Outdoors",
+    "4": "Home & Kitchen",
+    "5": "Office Supplies",
+    "6": "Travel"
+}
+
+choice = input("请输入分类编号：")
+
+category = category_options.get(choice)
+
+if category is None:
+    print("分类选择无效！")
+    exit()
+
+# 2. 接收用户搜索需求
+query = input("请输入商品搜索需求：")
+
+# 3. 生成查询向量
+query_embedding = model.encode(
+    query,
+    convert_to_numpy=True
+).tolist()
+
+# 4. 根据用户选择的分类进行向量检索
+results = collection.query(
+    query_embeddings=[query_embedding],
+    n_results=3,
+    where={
+        "category": category
+    }
+)
 
 # 5. 将用户问题转换成 384 维向量
 query_embedding = model.encode(
@@ -31,11 +73,15 @@ query_embedding = model.encode(
 ).tolist()
 
 # 6. 使用 Chroma 进行向量相似度检索
+
 results = collection.query(
     query_embeddings=[query_embedding],
-    n_results=min(3, collection.count()),
-    include=["documents", "metadatas", "distances"]
+    n_results=3,
+    where={
+       "category": category
+    }
 )
+
 
 # 7. 输出检索结果
 print("\n========== 商品语义检索结果 ==========")
