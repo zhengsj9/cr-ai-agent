@@ -51,28 +51,48 @@ def generate_listing(product):
 目标市场：{product['market']}
 商品卖点：{json.dumps(product['features'], ensure_ascii=False)}
 
-
 请完成以下任务：
 
 1. 生成一个专业的英文商品标题。
 
-2. 生成5条英文Bullet Points。
+2. 生成一段英文商品长描述（Product Description）。
+
+长描述要求：
+- 使用自然、专业的美国英语。
+- 将商品真实卖点组织成连贯的介绍。
+- 只能描述商品资料明确提供的属性。
+- 不得根据常识推测商品功能。
+- 不得添加未经证实的商品参数。
+- 不得编造续航、防水、降噪、认证等信息。
+- 商品资料不足时，不得自行推测。
+
+3. 生成最多5条英文Bullet Points。
 
 Bullet Points要求：
-
 - 每条描述围绕一个真实商品特征。
 - 使用自然、专业的美国英语。
-- 每条描述应当清晰易懂。
-- 可以解释商品特征，但不能编造未经证实的功能。
-- 不得虚构续航时间、防水等级、认证和性能参数。
-- 不得为了凑够5条而重复或编造商品卖点。
-- 如果商品资料不足以支持5条独立描述，
-  必须明确指出资料不足，不得编造。
+- 只能使用商品资料中明确提供的信息。
+- 不得为了凑够5条而编造或重复卖点。
+- 如果只有4条真实卖点，就只返回4条。
+- 不得将资料不足的提示作为商品卖点。
 
-3. 生成5个英文搜索关键词。
+4. 生成5个英文搜索关键词。
 
+关键词要求：
+- 必须与商品名称和真实属性相关。
+- 不得包含未经证实的商品功能。
+- 不得虚构品牌或商品参数。
 
-要求：
+5. 生成warnings警告信息。
+
+warnings要求：
+- 如果商品资料不足以支持5条独立卖点，
+  请说明资料不足。
+- 如果商品资料存在其他明显缺失，
+  请指出需要人工确认的内容。
+- 如果没有需要提醒的问题，返回空列表。
+
+其他要求：
 
 1. 只能使用提供的真实商品信息。
 2. 不得编造商品功能、认证、材质和性能。
@@ -85,12 +105,12 @@ JSON格式：
 
 {{
     "title": "英文标题",
+    "description": "英文商品长描述",
     "bullet_points": [
-        "描述1",
-        "描述2",
-        "描述3",
-        "描述4",
-        "描述5"
+        "真实卖点1",
+        "真实卖点2",
+        "真实卖点3",
+        "真实卖点4"
     ],
     "keywords": [
         "关键词1",
@@ -98,10 +118,14 @@ JSON格式：
         "关键词3",
         "关键词4",
         "关键词5"
+    ],
+    "warnings": [
+        "资料不足提醒"
     ]
 }}
 """
 
+    # 调用DeepSeek API
     response = client.chat.completions.create(
         model=model_name,
         messages=[
@@ -119,37 +143,95 @@ JSON格式：
         }
     )
 
+    # 获取AI返回内容
     content = response.choices[0].message.content
 
+    # 将JSON字符串转换成Python字典
     result = json.loads(content)
 
-    # 检查AI返回的数据结构
+    # 检查返回的数据结构
+    if not isinstance(result, dict):
+        raise ValueError("AI返回的数据必须是JSON对象")
+
+    # ==================================
+    # 第四部分：数据校验
+    # ==================================
+
+    # 1. 检查标题
     if not isinstance(result.get("title"), str) or not result["title"].strip():
         raise ValueError("AI返回的标题无效")
 
-    if not isinstance(result.get("bullet_points"), list) or len(result["bullet_points"]) != 5:
-        raise ValueError("AI必须返回5条Bullet Points")
+    # 2. 检查商品长描述
+    if not isinstance(result.get("description"), str) or not result["description"].strip():
+        raise ValueError("AI返回的商品长描述无效")
 
-    if not isinstance(result.get("keywords"), list) or len(result["keywords"]) != 5:
-        raise ValueError("AI必须返回5个关键词")
+    # 3. 检查五点描述
+    bullet_points = result.get("bullet_points")
 
-    if not all(isinstance(x, str) and x.strip() for x in result["bullet_points"]):
+    if not isinstance(bullet_points, list):
+        raise ValueError("Bullet Points必须是列表")
+
+    if len(bullet_points) > 5:
+        raise ValueError("Bullet Points不能超过5条")
+
+    if not all(
+        isinstance(x, str) and x.strip()
+        for x in bullet_points
+    ):
         raise ValueError("Bullet Points包含无效内容")
 
-    if not all(isinstance(x, str) and x.strip() for x in result["keywords"]):
+    # 4. 检查关键词
+    keywords = result.get("keywords")
+
+    if not isinstance(keywords, list) or len(keywords) != 5:
+        raise ValueError("AI必须返回5个关键词")
+
+    if not all(
+        isinstance(x, str) and x.strip()
+        for x in keywords
+    ):
         raise ValueError("关键词包含无效内容")
+
+    # 5. 检查warnings
+    warnings = result.get("warnings", [])
+
+    if not isinstance(warnings, list):
+        raise ValueError("warnings必须是列表")
+
+    if not all(
+        isinstance(x, str) and x.strip()
+        for x in warnings
+    ):
+        raise ValueError("warnings包含无效内容")
+
+    # 如果真实卖点不足5条，自动增加提醒
+    if len(bullet_points) < 5:
+
+        warning_message = (
+            f"当前只有{len(bullet_points)}条有资料支持的商品卖点，"
+            "不足5条，不应编造额外卖点。"
+        )
+
+        if warning_message not in warnings:
+            warnings.append(warning_message)
+
+    # ==================================
+    # 第五部分：返回完整Listing
+    # ==================================
 
     return {
         "product_id": product["product_id"],
         "product_name": product["name"],
         "title": result["title"],
-        "bullet_points": result["bullet_points"],
-        "keywords": result["keywords"]
+        "description": result["description"],
+        "bullet_points": bullet_points,
+        "keywords": keywords,
+        "warnings": warnings
     }
 
 
 # ==================================
-# 第四部分：批量处理商品
+# 第六部分：批量处理商品
 # ==================================
 
 def batch_generate():
@@ -183,6 +265,12 @@ def batch_generate():
             success_count += 1
 
             print("生成成功！")
+
+            if result["warnings"]:
+                print("注意：该商品存在以下提醒：")
+
+                for warning in result["warnings"]:
+                    print("-", warning)
 
         except Exception as error:
 
@@ -220,7 +308,7 @@ def batch_generate():
 
 
 # ==================================
-# 第五部分：程序入口
+# 第七部分：程序入口
 # ==================================
 
 if __name__ == "__main__":
