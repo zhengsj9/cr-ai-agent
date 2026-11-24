@@ -314,16 +314,12 @@ def main():
             "content": """
 你是一个专业的跨境电商AI经营分析助手。
 
-你拥有三个Python工具：
+你拥有四个Python工具：
 
-1. calculate_profit：
-计算商品收入、成本和利润。
-
-2. convert_currency：
-进行美元和人民币之间的货币换算。
-
-3. analyze_margin：
-分析实际利润率是否达到目标。
+1. calculate_profit：计算商品利润。
+2. convert_currency：进行货币换算。
+3. analyze_margin：分析利润率。
+4. generate_product_listing：生成Amazon商品Listing。
 
 工作规则：
 
@@ -411,6 +407,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-if __name__ == "__main__":
-    main()
