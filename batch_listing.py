@@ -86,11 +86,17 @@ Bullet Points要求：
 5. 生成warnings警告信息。
 
 warnings要求：
-- 如果商品资料不足以支持5条独立卖点，
-  请说明资料不足。
-- 如果商品资料存在其他明显缺失，
-  请指出需要人工确认的内容。
-- 如果没有需要提醒的问题，返回空列表。
+
+1. 如果商品规格、材质、尺寸等信息缺失，
+   请指出需要人工确认的内容。
+
+2. 如果商品名称与商品属性存在冲突，
+   请指出冲突内容。
+
+3. 不要在warnings中重复说明Bullet Points不足5条。
+   该提醒由Python程序统一生成。
+
+4. 如果没有其他需要提醒的问题，返回空列表。
 
 其他要求：
 
@@ -207,12 +213,12 @@ JSON格式：
     # 如果真实卖点不足5条，自动增加提醒
     if len(bullet_points) < 5:
 
-        warning_message = (
-            f"当前只有{len(bullet_points)}条有资料支持的商品卖点，"
-            "不足5条，不应编造额外卖点。"
-        )
-
-        if warning_message not in warnings:
+     warning_message = (
+        f"Only {len(bullet_points)} verified selling points "
+        "are available. Additional selling points "
+        "must not be invented."
+    )
+     if warning_message not in warnings:
             warnings.append(warning_message)
 
     # ==================================
@@ -237,7 +243,6 @@ JSON格式：
 def batch_generate():
 
     products = load_products()
-
     results = []
 
     success_count = 0
