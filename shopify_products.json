@@ -1,0 +1,345 @@
+[
+    {
+        "id": "gid://shopify/Product/16249984090278",
+        "title": "Gift Card",
+        "status": "ACTIVE",
+        "vendor": "Snowboard Vendor",
+        "productType": "giftcard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "10",
+                        "inventoryQuantity": 0
+                    }
+                },
+                {
+                    "node": {
+                        "price": "25",
+                        "inventoryQuantity": 0
+                    }
+                },
+                {
+                    "node": {
+                        "price": "50",
+                        "inventoryQuantity": 0
+                    }
+                },
+                {
+                    "node": {
+                        "price": "100",
+                        "inventoryQuantity": 0
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984123046",
+        "title": "The Inventory Not Tracked Snowboard",
+        "status": "ACTIVE",
+        "vendor": "CR AI Agent Test",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "950",
+                        "inventoryQuantity": 0
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984155814",
+        "title": "The Archived Snowboard",
+        "status": "ARCHIVED",
+        "vendor": "Snowboard Vendor",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "630",
+                        "inventoryQuantity": 50
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984188582",
+        "title": "The Minimal Snowboard",
+        "status": "ACTIVE",
+        "vendor": "CR AI Agent Test",
+        "productType": "",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "886",
+                        "inventoryQuantity": 50
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984221350",
+        "title": "The Hidden Snowboard",
+        "status": "ACTIVE",
+        "vendor": "Snowboard Vendor",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "750",
+                        "inventoryQuantity": 50
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984254118",
+        "title": "The Compare at Price Snowboard",
+        "status": "ACTIVE",
+        "vendor": "CR AI Agent Test",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "786",
+                        "inventoryQuantity": 10
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984286886",
+        "title": "The Out of Stock Snowboard",
+        "status": "ACTIVE",
+        "vendor": "CR AI Agent Test",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "886",
+                        "inventoryQuantity": 0
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984319654",
+        "title": "The Collection Snowboard: Hydrogen",
+        "status": "ACTIVE",
+        "vendor": "Hydrogen Vendor",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "600",
+                        "inventoryQuantity": 50
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984352422",
+        "title": "The Videographer Snowboard",
+        "status": "ACTIVE",
+        "vendor": "CR AI Agent Test",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "886",
+                        "inventoryQuantity": 50
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984385190",
+        "title": "The Draft Snowboard",
+        "status": "DRAFT",
+        "vendor": "Snowboard Vendor",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "2630",
+                        "inventoryQuantity": 20
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984417958",
+        "title": "Selling Plans Ski Wax",
+        "status": "ACTIVE",
+        "vendor": "CR AI Agent Test",
+        "productType": "accessories",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "25",
+                        "inventoryQuantity": 10
+                    }
+                },
+                {
+                    "node": {
+                        "price": "50",
+                        "inventoryQuantity": 10
+                    }
+                },
+                {
+                    "node": {
+                        "price": "10",
+                        "inventoryQuantity": 10
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984450726",
+        "title": "The Complete Snowboard",
+        "status": "ACTIVE",
+        "vendor": "Snowboard Vendor",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "700",
+                        "inventoryQuantity": 10
+                    }
+                },
+                {
+                    "node": {
+                        "price": "700",
+                        "inventoryQuantity": 10
+                    }
+                },
+                {
+                    "node": {
+                        "price": "700",
+                        "inventoryQuantity": 10
+                    }
+                },
+                {
+                    "node": {
+                        "price": "700",
+                        "inventoryQuantity": 10
+                    }
+                },
+                {
+                    "node": {
+                        "price": "700",
+                        "inventoryQuantity": 10
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984483494",
+        "title": "The Collection Snowboard: Oxygen",
+        "status": "ACTIVE",
+        "vendor": "Hydrogen Vendor",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "1025",
+                        "inventoryQuantity": 50
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984516262",
+        "title": "The Multi-location Snowboard",
+        "status": "ACTIVE",
+        "vendor": "CR AI Agent Test",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "730",
+                        "inventoryQuantity": 100
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984549030",
+        "title": "The 3p Fulfilled Snowboard",
+        "status": "ACTIVE",
+        "vendor": "CR AI Agent Test",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "2630",
+                        "inventoryQuantity": 20
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984581798",
+        "title": "The Multi-managed Snowboard",
+        "status": "ACTIVE",
+        "vendor": "Multi-managed Vendor",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "630",
+                        "inventoryQuantity": 100
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "gid://shopify/Product/16249984614566",
+        "title": "The Collection Snowboard: Liquid",
+        "status": "ACTIVE",
+        "vendor": "Hydrogen Vendor",
+        "productType": "snowboard",
+        "variants": {
+            "edges": [
+                {
+                    "node": {
+                        "price": "750",
+                        "inventoryQuantity": 50
+                    }
+                }
+            ]
+        }
+    }
+]
