@@ -86,34 +86,57 @@ def get_products(token):
     while True:
 
         query = """
-        query GetProducts($cursor: String) {
-            products(first: 10, after: $cursor) {
+        
+      query GetProducts($cursor: String) {
+         products(first: 10, after: $cursor) {
 
-                pageInfo {
-                    hasNextPage
-                    endCursor
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
+
+        edges {
+            node {
+                id
+                title
+                description
+                descriptionHtml
+
+                status
+                vendor
+                productType
+
+                tags
+
+metafields(first: 20) {
+    edges {
+        node {
+            namespace
+            key
+            type
+            value
+        }
+    }
+}
+
+                seo {
+                    title
+                    description
                 }
 
-                edges {
-                    node {
-                        id
-                        title
-                        status
-                        vendor
-                        productType
-
-                        variants(first: 5) {
-                            edges {
-                                node {
-                                    price
-                                    inventoryQuantity
-                                }
-                            }
+                variants(first: 5) {
+                    edges {
+                        node {
+                            price
+                            inventoryQuantity
                         }
                     }
                 }
             }
         }
+    }
+}
+
         """
 
         # 发送 GraphQL 请求

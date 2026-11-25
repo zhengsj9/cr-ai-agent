@@ -2,9 +2,19 @@
     {
         "id": "gid://shopify/Product/16249984090278",
         "title": "Gift Card",
+        "description": "This is a gift card for the store",
+        "descriptionHtml": "This is a gift card for the store",
         "status": "ACTIVE",
         "vendor": "Snowboard Vendor",
         "productType": "giftcard",
+        "tags": [],
+        "metafields": {
+            "edges": []
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -37,9 +47,23 @@
     {
         "id": "gid://shopify/Product/16249984123046",
         "title": "The Inventory Not Tracked Snowboard",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ACTIVE",
         "vendor": "CR AI Agent Test",
         "productType": "snowboard",
+        "tags": [
+            "Accessory",
+            "Sport",
+            "Winter"
+        ],
+        "metafields": {
+            "edges": []
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -54,9 +78,26 @@
     {
         "id": "gid://shopify/Product/16249984155814",
         "title": "The Archived Snowboard",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ARCHIVED",
         "vendor": "Snowboard Vendor",
         "productType": "snowboard",
+        "tags": [
+            "Archived",
+            "Premium",
+            "Snow",
+            "Snowboard",
+            "Sport",
+            "Winter"
+        ],
+        "metafields": {
+            "edges": []
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -71,9 +112,19 @@
     {
         "id": "gid://shopify/Product/16249984188582",
         "title": "The Minimal Snowboard",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ACTIVE",
         "vendor": "CR AI Agent Test",
         "productType": "",
+        "tags": [],
+        "metafields": {
+            "edges": []
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -88,9 +139,50 @@
     {
         "id": "gid://shopify/Product/16249984221350",
         "title": "The Hidden Snowboard",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ACTIVE",
         "vendor": "Snowboard Vendor",
         "productType": "snowboard",
+        "tags": [
+            "Premium",
+            "Snow",
+            "Snowboard",
+            "Sport",
+            "Winter"
+        ],
+        "metafields": {
+            "edges": [
+                {
+                    "node": {
+                        "namespace": "test_data",
+                        "key": "snowboard_weight",
+                        "type": "weight",
+                        "value": "{\"value\":8.0,\"unit\":\"POUNDS\"}"
+                    }
+                },
+                {
+                    "node": {
+                        "namespace": "global",
+                        "key": "title_tag",
+                        "type": "string",
+                        "value": "Hidden Snowboard"
+                    }
+                },
+                {
+                    "node": {
+                        "namespace": "global",
+                        "key": "description_tag",
+                        "type": "string",
+                        "value": "hidden snowboard winter sport snowboarding"
+                    }
+                }
+            ]
+        },
+        "seo": {
+            "title": "Hidden Snowboard",
+            "description": "hidden snowboard winter sport snowboarding"
+        },
         "variants": {
             "edges": [
                 {
@@ -105,9 +197,23 @@
     {
         "id": "gid://shopify/Product/16249984254118",
         "title": "The Compare at Price Snowboard",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ACTIVE",
         "vendor": "CR AI Agent Test",
         "productType": "snowboard",
+        "tags": [
+            "Accessory",
+            "Sport",
+            "Winter"
+        ],
+        "metafields": {
+            "edges": []
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -122,9 +228,23 @@
     {
         "id": "gid://shopify/Product/16249984286886",
         "title": "The Out of Stock Snowboard",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ACTIVE",
         "vendor": "CR AI Agent Test",
         "productType": "snowboard",
+        "tags": [
+            "Accessory",
+            "Sport",
+            "Winter"
+        ],
+        "metafields": {
+            "edges": []
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -139,9 +259,32 @@
     {
         "id": "gid://shopify/Product/16249984319654",
         "title": "The Collection Snowboard: Hydrogen",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ACTIVE",
         "vendor": "Hydrogen Vendor",
         "productType": "snowboard",
+        "tags": [
+            "Accessory",
+            "Sport",
+            "Winter"
+        ],
+        "metafields": {
+            "edges": [
+                {
+                    "node": {
+                        "namespace": "test_data",
+                        "key": "binding_mount",
+                        "type": "single_line_text_field",
+                        "value": "Optimistic"
+                    }
+                }
+            ]
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -156,9 +299,19 @@
     {
         "id": "gid://shopify/Product/16249984352422",
         "title": "The Videographer Snowboard",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ACTIVE",
         "vendor": "CR AI Agent Test",
         "productType": "snowboard",
+        "tags": [],
+        "metafields": {
+            "edges": []
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -173,9 +326,19 @@
     {
         "id": "gid://shopify/Product/16249984385190",
         "title": "The Draft Snowboard",
+        "description": "",
+        "descriptionHtml": "",
         "status": "DRAFT",
         "vendor": "Snowboard Vendor",
         "productType": "snowboard",
+        "tags": [],
+        "metafields": {
+            "edges": []
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -190,9 +353,23 @@
     {
         "id": "gid://shopify/Product/16249984417958",
         "title": "Selling Plans Ski Wax",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ACTIVE",
         "vendor": "CR AI Agent Test",
         "productType": "accessories",
+        "tags": [
+            "Accessory",
+            "Sport",
+            "Winter"
+        ],
+        "metafields": {
+            "edges": []
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -219,9 +396,58 @@
     {
         "id": "gid://shopify/Product/16249984450726",
         "title": "The Complete Snowboard",
+        "description": "This PREMIUM snowboard is so SUPERDUPER awesome!",
+        "descriptionHtml": "This <b>PREMIUM</b> <i>snowboard</i> is so <b>SUPER</b><i>DUPER</i> awesome!",
         "status": "ACTIVE",
         "vendor": "Snowboard Vendor",
         "productType": "snowboard",
+        "tags": [
+            "Premium",
+            "Snow",
+            "Snowboard",
+            "Sport",
+            "Winter"
+        ],
+        "metafields": {
+            "edges": [
+                {
+                    "node": {
+                        "namespace": "global",
+                        "key": "title_tag",
+                        "type": "string",
+                        "value": "Complete Snowboard"
+                    }
+                },
+                {
+                    "node": {
+                        "namespace": "global",
+                        "key": "description_tag",
+                        "type": "string",
+                        "value": "snowboard winter sport snowboarding"
+                    }
+                },
+                {
+                    "node": {
+                        "namespace": "test_data",
+                        "key": "snowboard_length",
+                        "type": "dimension",
+                        "value": "{\"value\":159.0,\"unit\":\"CENTIMETERS\"}"
+                    }
+                },
+                {
+                    "node": {
+                        "namespace": "test_data",
+                        "key": "snowboard_weight",
+                        "type": "weight",
+                        "value": "{\"value\":7.0,\"unit\":\"POUNDS\"}"
+                    }
+                }
+            ]
+        },
+        "seo": {
+            "title": "Complete Snowboard",
+            "description": "snowboard winter sport snowboarding"
+        },
         "variants": {
             "edges": [
                 {
@@ -260,9 +486,32 @@
     {
         "id": "gid://shopify/Product/16249984483494",
         "title": "The Collection Snowboard: Oxygen",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ACTIVE",
         "vendor": "Hydrogen Vendor",
         "productType": "snowboard",
+        "tags": [
+            "Accessory",
+            "Sport",
+            "Winter"
+        ],
+        "metafields": {
+            "edges": [
+                {
+                    "node": {
+                        "namespace": "test_data",
+                        "key": "binding_mount",
+                        "type": "single_line_text_field",
+                        "value": "Optimistic"
+                    }
+                }
+            ]
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -277,9 +526,25 @@
     {
         "id": "gid://shopify/Product/16249984516262",
         "title": "The Multi-location Snowboard",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ACTIVE",
         "vendor": "CR AI Agent Test",
         "productType": "snowboard",
+        "tags": [
+            "Premium",
+            "Snow",
+            "Snowboard",
+            "Sport",
+            "Winter"
+        ],
+        "metafields": {
+            "edges": []
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -294,9 +559,23 @@
     {
         "id": "gid://shopify/Product/16249984549030",
         "title": "The 3p Fulfilled Snowboard",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ACTIVE",
         "vendor": "CR AI Agent Test",
         "productType": "snowboard",
+        "tags": [
+            "Accessory",
+            "Sport",
+            "Winter"
+        ],
+        "metafields": {
+            "edges": []
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -311,9 +590,34 @@
     {
         "id": "gid://shopify/Product/16249984581798",
         "title": "The Multi-managed Snowboard",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ACTIVE",
         "vendor": "Multi-managed Vendor",
         "productType": "snowboard",
+        "tags": [
+            "Premium",
+            "Snow",
+            "Snowboard",
+            "Sport",
+            "Winter"
+        ],
+        "metafields": {
+            "edges": [
+                {
+                    "node": {
+                        "namespace": "test_data",
+                        "key": "snowboard_length",
+                        "type": "dimension",
+                        "value": "{\"value\":159.0,\"unit\":\"CENTIMETERS\"}"
+                    }
+                }
+            ]
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {
@@ -328,9 +632,32 @@
     {
         "id": "gid://shopify/Product/16249984614566",
         "title": "The Collection Snowboard: Liquid",
+        "description": "",
+        "descriptionHtml": "",
         "status": "ACTIVE",
         "vendor": "Hydrogen Vendor",
         "productType": "snowboard",
+        "tags": [
+            "Accessory",
+            "Sport",
+            "Winter"
+        ],
+        "metafields": {
+            "edges": [
+                {
+                    "node": {
+                        "namespace": "test_data",
+                        "key": "binding_mount",
+                        "type": "single_line_text_field",
+                        "value": "Optimistic"
+                    }
+                }
+            ]
+        },
+        "seo": {
+            "title": null,
+            "description": null
+        },
         "variants": {
             "edges": [
                 {

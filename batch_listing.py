@@ -66,6 +66,291 @@ def build_shopify_description_html(description, bullet_points):
 
 
 # ==================================
+# Shopify商品数据标准化
+# ==================================
+
+def normalize_shopify_product(shopify_product):
+
+    # 获取商品变体
+    variant_edges = (
+        shopify_product.get("variants") or {}
+    ).get("edges", [])
+
+    variants = []
+
+    for edge in variant_edges:
+
+        variant = edge.get("node", {})
+
+        variants.append({
+            "price": variant.get("price"),
+            "inventory_quantity": variant.get(
+                "inventoryQuantity"
+            )
+        })
+
+    # 获取SEO信息
+    seo = shopify_product.get("seo") or {}
+
+    # 转换为AI Agent统一商品结构
+    product = {
+
+        # Shopify商品唯一ID
+        "product_id": shopify_product.get("id"),
+
+        # 商品名称
+        "name": shopify_product.get("title", ""),
+
+        # 目标市场
+        "market": os.getenv("SHOPIFY_MARKET", ""),
+
+        # 目前没有经过验证的具体商品属性
+       
+        "features": extract_shopify_features(shopify_product),
+        # 商品属性默认未经人工审核
+        "features_approved": False,
+
+
+        # 保留Shopify原始资料
+        "source_description": (
+            shopify_product.get("description") or ""
+        ),
+
+        "description_html": (
+            shopify_product.get("descriptionHtml") or ""
+        ),
+
+        "vendor": shopify_product.get("vendor"),
+
+        "product_type": shopify_product.get(
+            "productType"
+        ),
+
+        "tags": shopify_product.get("tags", []),
+
+        "seo": {
+            "title": seo.get("title"),
+            "description": seo.get("description")
+        },
+
+        "variants": variants
+    }
+
+    return product
+
+# ==================================
+# Shopify Metafields商品属性提取
+# ==================================
+
+def extract_shopify_features(shopify_product):
+
+    features = []
+
+    # 获取Metafields
+    metafields = (
+        shopify_product.get("metafields") or {}
+    ).get("edges", [])
+
+    for edge in metafields:
+
+        metafield = edge.get("node") or {}
+
+        namespace = metafield.get("namespace")
+        key = metafield.get("key")
+        raw_value = metafield.get("value")
+
+        # 当前测试阶段只提取test_data命名空间
+        # 排除global中的SEO信息
+        if namespace != "test_data":
+            continue
+
+        if not key or raw_value is None:
+            continue
+
+        # 尝试解析JSON格式的Metafield
+        try:
+            parsed_value = json.loads(raw_value)
+
+        except (TypeError, json.JSONDecodeError):
+            parsed_value = raw_value
+
+        # 处理带有value和unit的结构
+        if isinstance(parsed_value, dict):
+
+            value = parsed_value.get("value")
+            unit = parsed_value.get("unit")
+
+            if value is None:
+                continue
+
+            if unit:
+                feature = f"{key}: {value} {unit}"
+            else:
+                feature = f"{key}: {value}"
+
+        else:
+
+            feature = f"{key}: {parsed_value}"
+
+        features.append(feature)
+
+    return features
+
+
+
+# ==================================
+# AI卖点来源完整性校验
+# ==================================
+
+def validate_selling_points(selling_points, product):
+
+    # 1. 检查卖点是否为列表
+    if not isinstance(selling_points, list):
+        raise ValueError("selling_points必须是列表")
+
+    # 2. 检查卖点数量
+    if len(selling_points) > 5:
+        raise ValueError("商品卖点不能超过5条")
+
+    # 3. 获取商品原始属性
+    source_features = product.get("features", [])
+
+    if not isinstance(source_features, list):
+        raise ValueError("商品features必须是列表")
+
+    bullet_points = []
+
+    # 4. 逐条检查卖点
+    for index, point in enumerate(selling_points, start=1):
+
+        if not isinstance(point, dict):
+            raise ValueError(
+                f"第{index}条卖点必须是字典"
+            )
+
+        text = point.get("text")
+
+        point_sources = point.get("source_features")
+
+        # 检查卖点文本
+        if not isinstance(text, str) or not text.strip():
+            raise ValueError(
+                f"第{index}条卖点文本无效"
+            )
+
+        # 检查来源列表
+        if not isinstance(point_sources, list) or not point_sources:
+            raise ValueError(
+                f"第{index}条卖点缺少来源"
+            )
+
+        # 检查来源内容
+        if not all(
+            isinstance(source, str) and source.strip()
+            for source in point_sources
+        ):
+            raise ValueError(
+                f"第{index}条卖点来源无效"
+            )
+
+        # 检查来源是否存在于原始商品属性
+        for source in point_sources:
+
+            if source not in source_features:
+
+                raise ValueError(
+                    f"第{index}条卖点引用了不存在的商品属性："
+                    f"{source}"
+                )
+
+        # 保存验证通过的卖点
+        bullet_points.append(text)
+
+    return bullet_points
+
+# ==================================
+# Shopify商品AI生成前的数据检查
+# ==================================
+
+
+# ==================================
+# Shopify商品AI生成前的数据检查
+# ==================================
+
+def assess_shopify_product_readiness(product):
+
+    features = product.get("features", [])
+
+    description = product.get(
+        "source_description", ""
+    )
+
+    tags = product.get("tags", [])
+
+    seo = product.get("seo") or {}
+
+    # 检查商品属性结构
+    if not isinstance(features, list):
+        raise ValueError("商品features必须是列表")
+
+    # 提取有效的候选属性
+    candidate_features = [
+        feature
+        for feature in features
+        if isinstance(feature, str) and feature.strip()
+    ]
+
+    # 检查人工审核状态
+    features_approved = (
+        product.get("features_approved") is True
+    )
+
+    warnings = []
+
+    if not description.strip():
+        warnings.append("商品缺少原始描述")
+
+    if not candidate_features:
+        warnings.append("商品缺少结构化属性")
+
+    elif not features_approved:
+        warnings.append(
+            "商品属性尚未经过人工审核，"
+            "暂时不能用于AI内容生成"
+        )
+
+    seo_complete = bool(
+        seo.get("title") and seo.get("description")
+    )
+
+    # 必须同时满足有属性和人工审核通过
+    ready_for_ai_generation = (
+        len(candidate_features) > 0
+        and features_approved
+    )
+
+    return {
+
+        "product_id": product.get("product_id"),
+
+        "product_name": product.get("name"),
+
+        "description_available": bool(description.strip()),
+
+        "candidate_feature_count": len(candidate_features),
+
+        "features_approved": features_approved,
+
+        "tag_count": len(tags),
+
+        "seo_complete": seo_complete,
+
+        "ready_for_ai_generation": ready_for_ai_generation,
+
+        "warnings": warnings
+    }
+
+# ==================================
 # 第四部分：定义Shopify商品生成函数
 # ==================================
 
@@ -78,6 +363,22 @@ def generate_listing(product):
 
     if not product_id or not product_name:
         raise ValueError("商品缺少product_id或name")
+    
+    # ==================================
+    # AI生成前的数据完整性检查
+    # ==================================
+
+    readiness = assess_shopify_product_readiness(product)
+
+    if not readiness["ready_for_ai_generation"]:
+
+        warning_text = "；".join(readiness["warnings"])
+
+        raise ValueError(
+            f"商品 {product_name} 暂不允许生成AI内容："
+            f"{warning_text}"
+        )
+
 
     if not isinstance(source_features, list):
         raise ValueError("商品features必须是列表")
@@ -247,51 +548,19 @@ JSON格式：
         raise ValueError("AI返回的商品描述无效")
 
 
-    # 3. 检查结构化商品卖点
+
+
+# ==================================
+# 使用独立函数校验AI卖点
+# ==================================
 
     selling_points = result.get("selling_points")
 
-    if not isinstance(selling_points, list):
-        raise ValueError("selling_points必须是列表")
+    bullet_points = validate_selling_points(
+        selling_points,
+        product
+    )
 
-    if len(selling_points) > 5:
-        raise ValueError("商品卖点不能超过5条")
-
-    for index, point in enumerate(selling_points, start=1):
-
-        if not isinstance(point, dict):
-            raise ValueError(f"第{index}条卖点必须是字典")
-
-        point_text = point.get("text")
-        point_sources = point.get("source_features")
-
-        if not isinstance(point_text, str) or not point_text.strip():
-            raise ValueError(f"第{index}条卖点文本无效")
-
-        if not isinstance(point_sources, list) or not point_sources:
-            raise ValueError(f"第{index}条卖点缺少原始属性来源")
-
-        if not all(
-            isinstance(source, str) and source.strip()
-            for source in point_sources
-        ):
-            raise ValueError(f"第{index}条卖点来源内容无效")
-
-        # 检查来源是否真实存在
-        if not all(
-            source in source_features
-            for source in point_sources
-        ):
-            raise ValueError(
-                f"第{index}条卖点引用了不存在的商品属性"
-            )
-
-    # 4. 提取卖点文本
-
-    bullet_points = [
-        point["text"]
-        for point in selling_points
-    ]
 
 
     # 5. 检查SEO信息
