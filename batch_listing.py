@@ -354,7 +354,7 @@ def assess_shopify_product_readiness(product):
 # 第四部分：定义Shopify商品生成函数
 # ==================================
 
-def generate_listing(product):
+def generate_listing(product, target_language="English"):
 
     product_id = product.get("product_id")
     product_name = product.get("name")
@@ -396,6 +396,18 @@ def generate_listing(product):
 商品编号：{product_id}
 商品名称：{product_name}
 目标市场：{market}
+目标生成语言：{target_language}
+
+语言要求：
+1. 商品标题必须使用目标语言。
+2. 商品描述必须使用目标语言。
+3. 商品卖点必须使用目标语言。
+4. SEO标题和SEO描述必须使用目标语言。
+5. 商品标签必须使用目标语言。
+6. warnings警告信息必须使用目标语言。
+7. JSON字段名称保持英文，不得翻译。
+8. 不得因为翻译而编造或改变商品属性。
+9.6. warnings中的所有面向用户的内容也必须使用目标语言，不允许混入其他语言。
 商品原始属性：{json.dumps(source_features, ensure_ascii=False)}
 
 请完成以下任务：
@@ -409,7 +421,7 @@ def generate_listing(product):
 2. 生成商品描述description。
 
 要求：
-- 使用自然、专业的英语。
+- - 使用自然、专业的目标语言（{target_language}）。
 - 只能描述商品资料明确提供的属性。
 - 不得推测商品功能。
 - 不得编造续航、防水、降噪、认证等信息。
@@ -427,6 +439,18 @@ def generate_listing(product):
 - 不得编造或夸大商品属性。
 - 不得重复卖点。
 - 不得为了凑够5条而编造卖点。
+
+进一步约束：
+
+- 商品卖点必须是原始商品属性的客观复述。
+- 不得使用未经数据支持的比较性词语，例如较长、较短、较轻、较重。
+- 不得从商品尺寸或重量推导便携性、操控性、舒适性或性能优势。
+- 不得推测商品适用人群、使用场景和实际使用效果。
+- 长度属性只能客观描述商品长度。
+- 重量属性只能客观描述商品重量。
+- 不允许为了让文案更有吸引力而添加未经验证的形容词。
+- 如果没有足够的真实属性支持某条卖点，应当省略该卖点。
+
 - 如果只有4条真实卖点，就只返回4条。
 
 4. 生成Shopify SEO信息seo。
@@ -616,19 +640,40 @@ JSON格式：
         raise ValueError("warnings包含无效内容")
 
 
-    # 8. 卖点不足5条时自动添加提醒
+   
+    # 8. 卖点不足5条时，根据目标语言自动添加提醒
 
     if len(selling_points) < 5:
 
-        warning_message = (
-            f"Only {len(selling_points)} verified selling points "
-            "are available. Additional selling points "
-            "must not be invented."
+        selling_point_count = len(selling_points)
+
+        warning_messages = {
+
+            "English": (
+                f"Only {selling_point_count} verified selling points "
+                "are available. Additional selling points "
+                "must not be invented."
+            ),
+
+            "Japanese": (
+                f"確認済みの商品訴求ポイントは"
+                f"{selling_point_count}件です。"
+                "追加の訴求ポイントを創作してはいけません。"
+            ),
+
+            "Chinese": (
+                f"目前只有{selling_point_count}条经过验证的商品卖点。"
+                "不得编造额外卖点。"
+            )
+        }
+
+        warning_message = warning_messages.get(
+            target_language,
+            warning_messages["English"]
         )
 
         if warning_message not in warnings:
             warnings.append(warning_message)
-
 
     # ==================================
     # 第六部分：生成Shopify商品描述HTML
@@ -673,13 +718,197 @@ JSON格式：
 
         "bullet_points": bullet_points,
 
-        "warnings": warnings
+        "warnings": warnings,
+        "target_language": target_language
     }
 
 
 # ==================================
+# 多语言Listing批量生成
+# ==================================
+
+
+# ==================================
+# 多语言Listing批量生成
+# 增加异常处理
+# ==================================
+
+def generate_multilingual_listings(product, languages):
+
+    if not isinstance(languages, list) or not languages:
+        raise ValueError("languages必须是非空列表")
+
+    results = []
+
+    failed_languages = []
+
+    for language in languages:
+
+        if not isinstance(language, str) or not language.strip():
+            raise ValueError("目标语言必须是有效字符串")
+
+        print(f"\n正在生成 {language} 版本...")
+
+        try:
+
+            result = generate_listing(
+                product,
+                target_language=language
+            )
+
+            results.append(result)
+
+            print(f"{language} 版本生成成功！")
+
+        except Exception as error:
+
+            failed_languages.append(language)
+
+            print(f"{language} 版本生成失败：{error}")
+
+            continue
+
+    # 输出失败统计
+    if failed_languages:
+
+        print("\n========== 语言生成失败统计 ==========")
+
+        for language in failed_languages:
+            print("-", language)
+
+    print("\n========== 多语言生成统计 ==========")
+
+    print("成功数量:", len(results))
+    print("失败数量:", len(failed_languages))
+
+    return results
+
+
+# ==================================
+# 保存多语言Listing
+# ==================================
+
+def save_multilingual_listings(results):
+
+    if not isinstance(results, list) or not results:
+        raise ValueError("results必须是非空列表")
+
+    # 语言与文件名映射
+    language_files = {
+        "English": "english",
+        "Japanese": "japanese",
+        "Chinese": "chinese"
+    }
+
+    # 创建多语言输出目录
+    output_dir = Path("output") / "multilingual"
+
+    output_dir.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    saved_files = []
+
+    # 分别保存不同语言
+    for result in results:
+
+        language = result.get("target_language")
+
+        if language not in language_files:
+            raise ValueError(f"不支持的语言：{language}")
+
+        product_id = result.get("product_id")
+
+        if not product_id:
+            raise ValueError("商品ID不能为空")
+
+        output_file = output_dir / (
+            f"listings_{language_files[language]}.json"
+        )
+
+        # 读取已有数据
+        existing_results = []
+
+        if output_file.exists():
+
+            with open(
+                output_file,
+                "r",
+                encoding="utf-8"
+            ) as file:
+
+                existing_results = json.load(file)
+
+            if not isinstance(existing_results, list):
+                raise ValueError("已有JSON数据格式错误")
+
+        # 根据商品ID更新或追加
+        for index, old_result in enumerate(existing_results):
+
+            if (
+                isinstance(old_result, dict)
+                and old_result.get("product_id") == product_id
+            ):
+                existing_results[index] = result
+                break
+
+        else:
+            existing_results.append(result)
+
+        # 保存JSON
+        with open(
+            output_file,
+            "w",
+            encoding="utf-8"
+        ) as file:
+
+            json.dump(
+                existing_results,
+                file,
+                ensure_ascii=False,
+                indent=4
+            )
+
+        saved_files.append(str(output_file))
+
+        print("保存成功：", output_file)
+
+    return saved_files
+
+# ==================================
 # 第八部分：批量处理商品
 # ==================================
+
+
+
+# ==================================
+# 多语言Listing完整处理流程
+# ==================================
+
+def generate_and_save_multilingual_listings(
+    product,
+    languages
+):
+
+    # 第一步：生成多语言Listing
+    results = generate_multilingual_listings(
+        product,
+        languages
+    )
+
+    # 第二步：保存多语言Listing
+    saved_files = save_multilingual_listings(
+        results
+    )
+
+    # 第三步：返回处理结果
+    return {
+        "product_id": product["product_id"],
+        "generated_count": len(results),
+        "saved_files": saved_files,
+        "results": results
+    }
 
 def batch_generate():
 
